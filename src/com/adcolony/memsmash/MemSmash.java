@@ -32,8 +32,10 @@ public class MemSmash extends Activity
     {
         super.onCreate(savedInstanceState);
 
+        System.out.println(">>> max mem " + Runtime.getRuntime().maxMemory());
+
         leakedMem = new ArrayList();
-        while (leakedSize < 182) {
+        while (true) {
             leakedMem.add(new byte[1024 * 1024]);
             System.out.println(">>> leaked " + (leakedSize++) + " MB");
             if (leakedMem == null) break;
