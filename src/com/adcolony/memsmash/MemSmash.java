@@ -19,13 +19,25 @@ import android.app.Activity;
 import android.widget.TextView;
 import android.os.Bundle;
 
+import java.util.List;
+import java.util.ArrayList;
 
 public class MemSmash extends Activity
 {
+    private List<byte[]> leakedMem;
+    private int leakedSize = 1;
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        leakedMem = new ArrayList();
+        while (leakedSize < 182) {
+            leakedMem.add(new byte[1024 * 1024]);
+            System.out.println(">>> leaked " + (leakedSize++) + " MB");
+            if (leakedMem == null) break;
+        }
 
         TextView  tv = new TextView(this);
         tv.setText(stringFromJNI());

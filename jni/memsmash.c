@@ -17,8 +17,25 @@
 #include <string.h>
 #include <jni.h>
 
+#include <android/log.h>
+#define LOG(...) __android_log_print( ANDROID_LOG_ERROR, "MemSmash", __VA_ARGS__ )
+
+char* leakedMem;
+int leakedSize = 1;
+
 jstring
 Java_com_adcolony_memsmash_MemSmash_stringFromJNI(JNIEnv* env, jobject self)
 {
+     while (1) {
+	  leakedMem = (char*)malloc(sizeof(char) * 1024 * 1024);
+	  leakedSize++;
+	  if (!leakedMem) {
+	       LOG("*** leaked %d MB", leakedSize);
+	       LOG("*** OOM");
+	       break;
+	  }
+     }
+
+
      return (*env)->NewStringUTF(env, "Hello from the other side!");
 }
