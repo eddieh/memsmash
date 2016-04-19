@@ -21,7 +21,7 @@
 #define LOG(...) __android_log_print( ANDROID_LOG_ERROR, "MemSmash", __VA_ARGS__ )
 
 char* leakedMem;
-int leakedSize = 1;
+int leakedSize = 0;
 
 jstring
 Java_com_adcolony_memsmash_MemSmash_stringFromJNI(JNIEnv* env, jobject self)

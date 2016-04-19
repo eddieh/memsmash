@@ -19,25 +19,35 @@ import android.app.Activity;
 import android.widget.TextView;
 import android.os.Bundle;
 
+import android.app.ActivityManager;
+
 import java.util.List;
 import java.util.ArrayList;
 
 public class MemSmash extends Activity
 {
     private List<byte[]> leakedMem;
-    private int leakedSize = 1;
+    private int leakedSize = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
+        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+
+        System.out.println(">>> mem class " + am.getMemoryClass());
+        System.out.println(">>> large mem class " + am.getLargeMemoryClass());
+
         System.out.println(">>> max mem " + Runtime.getRuntime().maxMemory());
 
         leakedMem = new ArrayList();
         while (true) {
             leakedMem.add(new byte[1024 * 1024]);
-            System.out.println(">>> leaked " + (leakedSize++) + " MB");
+            leakedSize++;
+            System.out.println(">>> leaked " + leakedSize + " MB");
+
+            // avoid unreachable compiler error (haha static analyzer)
             if (leakedMem == null) break;
         }
 
