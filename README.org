@@ -1,1 +1,9 @@
 * MemSmash
+
+A simple app for determining Android's memory limits. There is a lot
+of outdated, false, or misleading information regarding Android and
+its memory limitations. After a few days of Googling and experimenting
+it became clear that the only way to get to the bottom of things was
+to ignore everything I couldn't prove.
+
+** Myths
