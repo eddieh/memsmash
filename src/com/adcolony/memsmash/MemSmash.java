@@ -23,7 +23,7 @@ import android.app.ActivityManager;
 
 /*
  * I've got to praise Google for naming this interface. It is just the
- * best. What could be more clear? That name truly let's you know that
+ * best. What could be more clear? That name truly lets you know that
  * this is an interface containing a single callback method for memory
  * management. We include it here so we can implement the callback:
  * onTrimMemory(int). Genius!
