@@ -7,3 +7,66 @@ it became clear that the only way to get to the bottom of things was
 to ignore everything I couldn't prove.
 
 ** Myths
+
+Just because Android's primary programming language is Java doesn't
+mean that memory management is an ignorable detail or that it is
+outside of the programmer's control.
+
+** General Memory Statistics
+
+To get the most basic information for an Android device, issue the
+following command:
+
+#+BEGIN_SRC sh
+$ adb shell cat /proc/meminfo
+#+END_SRC
+
+To get info for a running app issue the following command:
+
+#+BEGIN_SRC sh
+$ adb shell dumpsys meminfo com.adcolony.memsmash
+#+END_SRC
+
+Running the dumpsys command without a package name will give a summary
+of all running processes:
+
+#+BEGIN_SRC sh
+$ adb shell dumpsys meminfo
+#+END_SRC
+
+The =dumpsys= command is very useful and can be used to query the
+system for a variety of information. =dumpsys= doesn't have a command
+for help or listing services, so one must improvise to get a listing
+of its capabilities. Use the following command to get a list of
+services you can query, it may take a minute or two to complete.
+
+#+BEGIN_SRC sh
+$ adb shell dumpsys | grep "DUMP OF SERVICE"
+#+END_SRC
+
+** Programmatic Memory Statistics
+*** Java
+*** C
+
+** Out Of Memory Error
+
+How to get an Out Of Memory (OMM) error.
+
+*** Java
+*** C
+
+** Caveats
+
+Oddly some common and memory intensive views don't necessarily cause
+OOM errors, even when they cause the heap to grow past its limit. The
+views I've observed that seem to defy normal rules include video views
+and web views.
+
+** Resources
+
+- http://elinux.org/Android_Memory_Usage
+- http://developer.android.com/training/articles/memory.html
+- https://source.android.com/devices/tech/dalvik/gc-debug.html
+- http://developer.android.com/reference/android/content/ComponentCallbacks2.html
+- https://www.youtube.com/watch?v=_CruQY55HOk
+- https://www.youtube.com/watch?v=gbQb1PVjfqM

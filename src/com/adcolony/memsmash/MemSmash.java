@@ -21,10 +21,19 @@ import android.os.Bundle;
 
 import android.app.ActivityManager;
 
+/*
+ * I've got to praise Google for naming this interface. It is just the
+ * best. What could be more clear? That name truly let's you know that
+ * this is an interface containing a single callback method for memory
+ * management. We include it here so we can implement the callback:
+ * onTrimMemory(int). Genius!
+ */
+import android.content.ComponentCallbacks2;
+
 import java.util.List;
 import java.util.ArrayList;
 
-public class MemSmash extends Activity
+public class MemSmash extends Activity implements ComponentCallbacks2
 {
     private List<byte[]> leakedMem;
     private int leakedSize = 0;
@@ -41,22 +50,56 @@ public class MemSmash extends Activity
 
         System.out.println(">>> max mem " + Runtime.getRuntime().maxMemory());
 
+
         leakedMem = new ArrayList();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run()
+            {
+                smashMemory();
+            }
+        }).start();
+
+        TextView  tv = new TextView(this);
+        //tv.setText(stringFromJNI());
+        tv.setText("what");
+        setContentView(tv);
+    }
+
+    @Override
+    public void onTrimMemory(int level)
+    {
+        System.out.println(">>> TRIM!!! " + level);
+
+        super.onTrimMemory(level);
+    }
+
+    @Override
+    public void onLowMemory ()
+    {
+        System.out.println(">>> LOW!!!");
+    }
+
+    public native String  stringFromJNI();
+
+    private synchronized void smashMemory ()
+    {
         while (true) {
             leakedMem.add(new byte[1024 * 1024]);
             leakedSize++;
             System.out.println(">>> leaked " + leakedSize + " MB");
 
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                // DGAF
+            }
+
             // avoid unreachable compiler error (haha static analyzer)
             if (leakedMem == null) break;
         }
-
-        TextView  tv = new TextView(this);
-        tv.setText(stringFromJNI());
-        setContentView(tv);
     }
-
-    public native String  stringFromJNI();
 
     static {
         System.loadLibrary("memsmash");

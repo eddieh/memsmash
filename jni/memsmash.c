@@ -28,9 +28,13 @@ Java_com_adcolony_memsmash_MemSmash_stringFromJNI(JNIEnv* env, jobject self)
 {
      while (1) {
 	  leakedMem = (char*)malloc(sizeof(char) * 1024 * 1024);
+
+	  /* memset(leakedMem, 'A', 1024 * 1024); */
+
 	  leakedSize++;
+	  LOG("*** leaked %d MB", leakedSize);
+
 	  if (!leakedMem) {
-	       LOG("*** leaked %d MB", leakedSize);
 	       LOG("*** OOM");
 	       break;
 	  }
